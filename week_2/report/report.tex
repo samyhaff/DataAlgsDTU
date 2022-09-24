@@ -3,6 +3,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage[margin=2.5cm]{geometry}
 
 \title{Algorithms and Data Structures 2}
@@ -16,6 +18,9 @@
 \subsection*{Manhattan Tourists}
 
 \textbf{5.1}
+
+We fill the table for the given example:
+
 \begin{center}
     \begin{tabular}{ |c||c|c|c|c|c| }
         \hline
@@ -34,6 +39,9 @@
     \end{tabular}
 \end{center}
 
+Thus, the maximum weight a shortest path can have is $W[5,5] = 52$.
+
+\noindent
 \textbf{5.2}
 
 $$
@@ -45,5 +53,51 @@ W[i-1,j] + D[i-1,j] & \text{for } j = 1 \\
 \max(W[i-1, j] + D[i-1,j], W[i,j-1] + R[i,j-1]) & \text{otherwise}
 \end{cases}
 $$
+
+Indeed,
+
+\begin{itemize}
+\item{$W[1,1] = 0$ since the path is empty when going from $s$ to $s$}
+\item{When $i = 1$ it is only possible to walk right}
+\item{When $j = 1$ it is only possible to walk down}
+\item{In the last case, there were two available choices for the last
+move leading to the node $\nu_{i,j}$: walking down from $\nu_{i-1,j}$
+or walking right from $\nu_{i,j-1}$. We choose the one which maximizes
+the sum of the weights along the path}
+\end{itemize}
+
+\noindent
+\textbf{5.3}
+
+\begin{algorithm}
+\caption{Compute the maximum weigh a shortest path can have}
+\label{algorithm}
+\begin{algorithmic}
+    \Require $n, D, R$
+    \Ensure W[n,n] is the maximum weight a shortest path $s-t$ can have
+    \State $W[1,1] \gets 0$
+    \For{i = 2 to n}
+    \State $W[i,1] \gets W[i-1,1] + D[i-1,1]$
+    \EndFor
+    \For{j = 2 to n}
+    \State $W[1,j] \gets W[1,j-1] + R[1,j-1]$
+    \EndFor
+    \For{i = 2 to n}
+    \For{j = 2 to n}
+    \State $W[1,j] \gets \max(W[i-1, j] + D[i-1,j], W[i,j-1] + R[i,j-1])$
+    \EndFor
+    \EndFor
+\end{algorithmic}
+\end{algorithm}
+
+We write algorithm \ref{algorithm} (page \pageref{algorithm}) based on
+dynamic Programming and the recurrence from Question \textbf{5.2}.
+Since we store the results to the subproblems in table $W$ of size
+$ n x n $ we use $O(n^2)$ space.
+The first two loops make $n - 1$ iterations each.
+Regarding the nested loops, the outer one makes $n - 1$ iterations
+while the inner one makes $n - 1$ iterations per iteration of the
+outer loop. All other operations are done in constant time and thus the
+total time of the algorithm is $O(n^2)$.
 
 \end{document}
