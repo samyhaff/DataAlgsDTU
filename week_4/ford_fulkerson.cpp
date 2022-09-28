@@ -2,7 +2,7 @@
 
 using namespace std;
 
-bool get_path(int **graph, int n, int start, int end) {
+vector<int> get_path(int **graph, int n, int start, int end) {
     vector<int> path;
     bool *visited = new bool[n];
     int *parent = new int[n];
@@ -30,9 +30,19 @@ bool get_path(int **graph, int n, int start, int end) {
         }
     }
 
+    if (found) {
+        v = end;
+        path.push_back(v);
+        while (v != start) {
+            v = parent[v];
+            path.push_back(v);
+        }
+        reverse(path.begin(), path.end());
+    }
+
     delete[] visited;
     delete[] parent;
-    return found;
+    return path;
 }
 
 int main() {
@@ -53,7 +63,10 @@ int main() {
         graph[in_node][out_node] = capacity;
     }
 
-    cout << get_path(graph, n, 0, 1);
+    vector<int> path = get_path(graph, n, 0, 1);
+    for (auto v: path) {
+        cout << v << " ";
+    }
 
     return 0;
 }
