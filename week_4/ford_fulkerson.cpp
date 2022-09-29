@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void print_graph(int **graph, int n) {
+void print_graph(__uint16_t **graph, int n) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++)
             cout << graph[i][j] << " ";
@@ -10,7 +10,7 @@ void print_graph(int **graph, int n) {
     }
 }
 
-vector<int> get_path(int **graph, int n, int start, int end) {
+vector<int> get_path(__uint16_t **graph, int n, int start, int end) {
     vector<int> path;
     bool *visited = new bool[n];
     int *parent = new int[n];
@@ -53,7 +53,7 @@ vector<int> get_path(int **graph, int n, int start, int end) {
     return path;
 }
 
-int get_bottleneck(int **graph, vector<int> path) {
+int get_bottleneck(__uint16_t **graph, vector<int> path) {
     int in_node, out_node, capacity;
     int bottleneck = graph[path[0]][path[1]];
 
@@ -67,7 +67,7 @@ int get_bottleneck(int **graph, vector<int> path) {
     return bottleneck;
 }
 
-void augment(int **graph, vector<int> path) {
+void augment(__uint16_t **graph, vector<int> path) {
     int in_node, out_node;
     int bottleneck = get_bottleneck(graph, path);
 
@@ -79,18 +79,30 @@ void augment(int **graph, vector<int> path) {
     }
 }
 
-// int ford_fulkerson(int **graph, int n, int start, int end) {
-//
-// }
+int max_flow(__uint16_t **res_graph, __uint16_t **graph, int n, int start, int end) {
+    vector<int> path;
+    int max_flow = 0;
+
+    while ((path = get_path(res_graph, n, start, end)).size() > 0)
+        augment(res_graph, path);
+
+    for (int i = 0; i < n; i++)
+        if (graph[i][start] == 0) max_flow += res_graph[i][start];
+
+    return max_flow;
+}
 
 int main() {
     int n, m;
     int in_node, out_node, capacity;
 
     cin >> n >> m;
-    int **graph = new int*[n];
-    for (int i = 0; i < n; i++)
-        graph[i] = new int[n];
+    __uint16_t **graph = new __uint16_t*[n];
+    __uint16_t **res_graph = new __uint16_t*[n];
+    for (int i = 0; i < n; i++) {
+        graph[i] = new __uint16_t[n];
+        res_graph[i] = new __uint16_t[n];
+    }
 
     for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
@@ -101,11 +113,11 @@ int main() {
         graph[in_node][out_node] = capacity;
     }
 
-    // test
-    print_graph(graph, n);
-    vector<int> path = get_path(graph, n, 0, 1);
-    augment(graph, path); cout << endl;
-    print_graph(graph, n);
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            res_graph[i][j] = graph[i][j];
+
+    cout << max_flow(res_graph, graph, n, 0, 1);
 
     return 0;
 }
