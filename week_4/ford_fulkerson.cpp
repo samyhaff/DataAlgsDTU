@@ -45,6 +45,28 @@ vector<int> get_path(int **graph, int n, int start, int end) {
     return path;
 }
 
+int get_bottleneck(int **graph, vector<int> path) {
+    int in_node, out_node, capacity;
+    int bottleneck = graph[path[0]][path[1]];
+
+    for (int i = 1; i < path.size() - 1; i++) {
+        in_node = path[i];
+        out_node = path[i + 1];
+        capacity = graph[in_node][out_node];
+        if (capacity < bottleneck) bottleneck = capacity;
+    }
+
+    return bottleneck;
+}
+
+// void augment(int **graph, vector<int> path) {
+//
+// }
+//
+// int ford_fulkerson(int **graph, int n, int start, int end) {
+//
+// }
+
 int main() {
     int n, m;
     int in_node, out_node, capacity;
@@ -67,6 +89,8 @@ int main() {
     for (auto v: path) {
         cout << v << " ";
     }
+    cout << endl;
+    cout << get_bottleneck(graph, path);
 
     return 0;
 }
