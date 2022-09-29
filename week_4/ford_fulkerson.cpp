@@ -2,6 +2,14 @@
 
 using namespace std;
 
+void print_graph(int **graph, int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++)
+            cout << graph[i][j] << " ";
+        cout << endl;
+    }
+}
+
 vector<int> get_path(int **graph, int n, int start, int end) {
     vector<int> path;
     bool *visited = new bool[n];
@@ -59,10 +67,18 @@ int get_bottleneck(int **graph, vector<int> path) {
     return bottleneck;
 }
 
-// void augment(int **graph, vector<int> path) {
-//
-// }
-//
+void augment(int **graph, vector<int> path) {
+    int in_node, out_node;
+    int bottleneck = get_bottleneck(graph, path);
+
+    for (int i = 0; i < path.size() - 1; i++) {
+        in_node = path[i];
+        out_node = path[i + 1];
+        graph[in_node][out_node] -= bottleneck;
+        graph[out_node][in_node] += bottleneck;
+    }
+}
+
 // int ford_fulkerson(int **graph, int n, int start, int end) {
 //
 // }
@@ -85,12 +101,11 @@ int main() {
         graph[in_node][out_node] = capacity;
     }
 
+    // test
+    print_graph(graph, n);
     vector<int> path = get_path(graph, n, 0, 1);
-    for (auto v: path) {
-        cout << v << " ";
-    }
-    cout << endl;
-    cout << get_bottleneck(graph, path);
+    augment(graph, path); cout << endl;
+    print_graph(graph, n);
 
     return 0;
 }
