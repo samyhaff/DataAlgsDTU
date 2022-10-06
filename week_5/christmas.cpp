@@ -5,7 +5,7 @@ using namespace std;
 
 #define MAX_TREES_ROW 2
 #define MAX_TREES_COL 1
-
+#define MAX_TABLES_SQUARE 1
 
 int main() {
     int n, m;
@@ -30,7 +30,7 @@ int main() {
         graph[0][i] = MAX_TREES_ROW;
     for (int i = 1; i <= n; i++)
         for (int j = n + 1; j <= n + m; j++)
-            graph[i][j] = 1; // each row can only be matched once with each column
+            graph[i][j] = MAX_TABLES_SQUARE;
     for (int i = n + 1; i <= n + m; i++)
         graph[i][n + m + 1] = MAX_TREES_COL;
 
