@@ -15,5 +15,7 @@ int main() {
         nodes[i].zone = z;
     }
 
+    create_graph(nodes);
+
     return 0;
 }

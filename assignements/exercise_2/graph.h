@@ -14,3 +14,5 @@ struct Node {
     Zone *zone;
     std::vector<std::pair<unsigned int, Node*>> neighbors;
 };
+
+void create_graph(std::vector<Node>&);
