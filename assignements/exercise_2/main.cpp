@@ -16,6 +16,9 @@ int main() {
     }
 
     create_graph(nodes);
+    for (auto node: nodes)
+        cout << node.neighbors.size() << " ";
+    cout << endl;
 
     return 0;
 }
