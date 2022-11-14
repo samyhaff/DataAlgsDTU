@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 #include "graph.h"
+#include "ford_fulkerson.h"
 
 using namespace std;
 
@@ -19,6 +20,11 @@ int main() {
     for (auto node: nodes)
         cout << node.neighbors.size() << " ";
     cout << endl;
+
+    vector<Node *> path = get_path(&nodes[0], &nodes[n - 1]);
+    for (Node *node: path)
+        if (node->zone)
+            cout << node->zone->x << " " << node->zone->y << endl;
 
     return 0;
 }
