@@ -26,5 +26,8 @@ int main() {
         if (node->zone)
             cout << node->zone->x << " " << node->zone->y << endl;
 
+    int bottleneck = get_bottleneck(path);
+    cout << bottleneck << endl;
+
     return 0;
 }
