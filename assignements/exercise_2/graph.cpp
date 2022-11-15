@@ -10,7 +10,7 @@ Node *create_node(Node *node, int capacity) {
     return new_node;
 }
 
-Node *get_farthest_node(Node node, vector<Node> nodes) {
+Node *get_farthest_node(Node node, vector<Node>& nodes) {
     int distance, max_distance = 0;
     Node *res = NULL;
 
@@ -49,7 +49,7 @@ void create_graph(vector<Node> &nodes) {
             Node *new_node = create_node(&node, capacity);
 
             Node *farthest_node = get_farthest_node(node, nodes);
-            if (farthest_node != NULL)
+            if (farthest_node != NULL) {}
                 new_node->neighbors.push_back(make_pair(INT_MAX, farthest_node));
         }
 
