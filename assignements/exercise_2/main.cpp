@@ -17,17 +17,22 @@ int main() {
     }
 
     create_graph(nodes);
-    for (auto node: nodes)
-        cout << node.neighbors.size() << " ";
-    cout << endl;
 
-    vector<Node *> path = get_path(&nodes[0], &nodes[n - 1]);
-    for (Node *node: path)
-        if (node->zone)
-            cout << node->zone->x << " " << node->zone->y << endl;
+    // for (auto node: nodes)
+    //     cout << node.neighbors.size() << " ";
+    // cout << endl;
+    //
+    // vector<Node *> path = get_path(&nodes[0], &nodes[n - 1]);
+    // for (Node *node: path)
+    //     if (node->zone)
+    //         cout << node->zone->x << " " << node->zone->y << endl;
+    //
+    // int bottleneck = get_bottleneck(path);
+    // cout << bottleneck << endl;
+    //
+    // augment(path);
 
-    int bottleneck = get_bottleneck(path);
-    cout << bottleneck << endl;
+    cout << max_flow(&nodes[0], &nodes[n - 1]) << endl;
 
     return 0;
 }

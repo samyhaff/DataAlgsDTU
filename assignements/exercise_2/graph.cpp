@@ -60,7 +60,7 @@ void create_graph(vector<Node> &nodes) {
             for (auto& candidate: nodes) {
                 int count = 0;
                 for (auto& n: nodes) {
-                    int det = node.zone->x * (n.zone->y * candidate.zone->y)
+                    int det = node.zone->x * (n.zone->y - candidate.zone->y)
                         + n.zone->x * (candidate.zone->y - node.zone->y)
                         + candidate.zone->x * (node.zone->y - n.zone->y);
                     int scalar_1 = (candidate.zone->x - node.zone->x) * (n.zone->x - node.zone->x)

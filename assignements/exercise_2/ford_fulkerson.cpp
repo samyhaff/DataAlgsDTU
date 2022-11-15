@@ -23,7 +23,7 @@ vector<Node *> get_path(Node *start, Node *end) {
 
         for (auto& edge: node->neighbors) {
             Node *neighbor = edge.second;
-            if (visited.find(neighbor) == visited.end()) {
+            if (visited.find(neighbor) == visited.end() && edge.first > 0) {
                 stack.push(neighbor);
                 visited.insert(neighbor);
                 parent[neighbor] = node;
@@ -48,7 +48,7 @@ int get_bottleneck(vector<Node *> path) {
     int capacity, bottleneck = INT_MAX;
     Node *in_node, *out_node;
 
-    for (int i = 0; i < path.size() - 1; i++) {
+    for (auto i = 0; i < path.size() - 1; i++) {
         in_node = path[i];
         out_node = path[i + 1];
         for (auto& edge: in_node->neighbors) {
@@ -62,4 +62,51 @@ int get_bottleneck(vector<Node *> path) {
     }
 
     return bottleneck;
+}
+
+int augment(vector<Node *> path) {
+    int bottleneck = get_bottleneck(path);
+    Node *in_node, *out_node;
+    bool found_edge = false;
+
+    for (auto i = 0; i < path.size() - 1; i++) {
+        in_node = path[i];
+        out_node = path[i + 1];
+        found_edge = false;
+
+        // forward edge
+        for (auto& edge: in_node->neighbors) {
+            Node *tmp = edge.second;
+            if (tmp == out_node) {
+                edge.first -= bottleneck;
+                break;
+            }
+        }
+
+        // backward_edge
+        for (auto& edge: out_node->neighbors) {
+            Node *tmp = edge.second;
+            if (tmp == in_node) {
+                found_edge = true;
+                edge.first += bottleneck;
+                break;
+            }
+        }
+
+        if (!found_edge)
+            out_node->neighbors.push_back(make_pair(bottleneck, in_node));
+
+    }
+
+    return bottleneck;
+}
+
+int max_flow(Node *start, Node *end) {
+    vector<Node *> path;
+    int max_flow = 0;
+
+    while ((path = get_path(start, end)).size() > 0)
+        max_flow += augment(path);
+
+    return max_flow;
 }
